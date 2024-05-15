@@ -12,7 +12,7 @@
       !(function (t, e) {
         var o, n, p, r;
         e.__SV ||
-          ((window.posthog = e),
+          ((window.analytics = e),
           (e._i = []),
           (e.init = function (i, s, a) {
             function g(t, e) {
@@ -54,8 +54,8 @@
             e._i.push([i, s, a]);
           }),
           (e.__SV = 1));
-      })(document, window.posthog || []);
-      posthog.init("phc_PItaSIruI9BVrpCW3Sr0bagxLvqvb32VdjbWDevxKwr", {
+      })(document, window.analytics || []);
+      analytics.init("phc_PItaSIruI9BVrpCW3Sr0bagxLvqvb32VdjbWDevxKwr", {
         api_host: "https://analytics.latest.pypestream.dev",
         session_recording: {
           recordCrossOriginIframes: true,
