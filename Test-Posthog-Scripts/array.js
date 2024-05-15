@@ -6612,7 +6612,7 @@
     })(),
     Tr = {},
     Mr = function () {},
-    Or = "analytics",
+    Or = "posthog",
     qr =
       !Zi &&
       -1 === (null == N ? void 0 : N.indexOf("MSIE")) &&
@@ -6687,7 +6687,7 @@
         },
         _onCapture: Mr,
         capture_performance: void 0,
-        name: "analytics",
+        name: "posthog",
         bootstrap: {},
         disable_compression: !1,
         session_idle_timeout_seconds: 1800,
