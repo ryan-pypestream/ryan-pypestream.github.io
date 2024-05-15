@@ -31,12 +31,14 @@
               );
             var u = e;
             for (
-              void 0 !== a ? (u = e[a] = []) : (a = "posthog"),
+              void 0 !== a ? (u = e[a] = []) : (a = "analytics"),
                 u.people = u.people || [],
                 u.toString = function (t) {
-                  var e = "posthog";
+                  var e = "analytics";
                   return (
-                    "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e
+                    "analytics" !== a && (e += "." + a),
+                    t || (e += " (stub)"),
+                    e
                   );
                 },
                 u.people.toString = function () {
