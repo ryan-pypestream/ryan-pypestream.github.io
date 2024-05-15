@@ -12,7 +12,7 @@
       !(function (t, e) {
         var o, n, p, r;
         e.__SV ||
-          ((window.posthog = e),
+          ((window.analytics = e),
           (e._i = []),
           (e.init = function (i, s, a) {
             function g(t, e) {
@@ -32,12 +32,14 @@
               );
             var u = e;
             for (
-              void 0 !== a ? (u = e[a] = []) : (a = "posthog"),
+              void 0 !== a ? (u = e[a] = []) : (a = "analytics"),
                 u.people = u.people || [],
                 u.toString = function (t) {
-                  var e = "posthog";
+                  var e = "analytics";
                   return (
-                    "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e
+                    "analytics" !== a && (e += "." + a),
+                    t || (e += " (stub)"),
+                    e
                   );
                 },
                 u.people.toString = function () {
@@ -55,8 +57,8 @@
             e._i.push([i, s, a]);
           }),
           (e.__SV = 1));
-      })(document, window.posthog || []);
-      posthog.init("phc_eLAYzGtEB0n30FxS39JCG9lKrBEvmwCHeCQVlPOqYk9", {
+      })(document, window.analytics || []);
+      analytics.init("phc_eLAYzGtEB0n30FxS39JCG9lKrBEvmwCHeCQVlPOqYk9", {
         api_host: "https://analytics.latest.pypestream.dev",
       });
     </script>

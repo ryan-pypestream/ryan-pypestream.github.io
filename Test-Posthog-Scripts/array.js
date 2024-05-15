@@ -6612,7 +6612,7 @@
     })(),
     Tr = {},
     Mr = function () {},
-    Or = "posthog",
+    Or = "analytics",
     qr =
       !Zi &&
       -1 === (null == N ? void 0 : N.indexOf("MSIE")) &&
