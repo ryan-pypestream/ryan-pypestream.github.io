@@ -8056,7 +8056,7 @@
   })(Dr, ["identify"]);
   var Nr, Hr;
   (Nr = Tr[Or] = new Dr()),
-    (Hr = H.posthog) &&
+    (Hr = H.analytics) &&
       V(Hr._i, function (e) {
         if (e && m(e)) {
           var t = Nr.init(e[0], e[1], e[2]),
@@ -8064,7 +8064,7 @@
           t && (t._execute_array.call(t.people, n.people), t._execute_array(n));
         }
       }),
-    (H.posthog = Nr),
+    (H.analytics = Nr),
     (function () {
       function e() {
         e.done ||
