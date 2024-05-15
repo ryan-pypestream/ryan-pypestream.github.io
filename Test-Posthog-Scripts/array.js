@@ -6687,7 +6687,7 @@
         },
         _onCapture: Mr,
         capture_performance: void 0,
-        name: "posthog",
+        name: "analytics",
         bootstrap: {},
         disable_compression: !1,
         session_idle_timeout_seconds: 1800,
