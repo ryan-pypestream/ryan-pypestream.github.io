@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Tourism Website</title>
+    <style>
+      /* Styles go here */
+    </style>
+    <script>
+      !(function (t, e) {
+        var o, n, p, r;
+        e.__SV ||
+          ((window.analytics = e),
+          (e._i = []),
+          (e.init = function (i, s, a) {
+            function g(t, e) {
+              var o = e.split(".");
+              2 == o.length && ((t = t[o[0]]), (e = o[1])),
+                (t[e] = function () {
+                  t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
+                });
+            }
+            ((p = t.createElement("script")).type = "text/javascript"),
+              (p.async = !0),
+              (p.src =
+                "https://analytics.candidate.pypestream.dev/static/array.js"),
+              (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(
+                p,
+                r
+              );
+            var u = e;
+            for (
+              void 0 !== a ? (u = e[a] = []) : (a = "analytics"),
+                u.people = u.people || [],
+                u.toString = function (t) {
+                  var e = "analytics";
+                  return (
+                    "analytics" !== a && (e += "." + a),
+                    t || (e += " (stub)"),
+                    e
+                  );
+                },
+                u.people.toString = function () {
+                  return u.toString(1) + ".people (stub)";
+                },
+                o =
+                  "capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(
+                    " "
+                  ),
+                n = 0;
+              n < o.length;
+              n++
+            )
+              g(u, o[n]);
+            e._i.push([i, s, a]);
+          }),
+          (e.__SV = 1));
+      })(document, window.analytics || []);
+      analytics.init("phc_eLAYzGtEB0n30FxS39JCG9lKrBEvmwCHeCQVlPOqYk9", {
+        api_host: "https://analytics.latest.pypestream.dev",
+        session_recording: {
+          recordCrossOriginIframes: true,
+        },
+      });
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="logo">Logo</div>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Option 1</a></li>
+          <li><a href="#">Option 2</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div id="chat-container" class="chat-container"></div>
+    <footer>
+      <div class="newsletter">
+        <p>Subscribe to our newsletter for updates and promotions:</p>
+        <input type="email" placeholder="Enter your email" />
+        <button>Subscribe</button>
+      </div>
+    </footer>
+    <script>
+      window.pypestreamConfig = {
+        APP_ID: "16447d23-a77a-49ce-8eaa-22c507c9384b",
+        first_name: "", // TODO: Input user's first name
+        last_name: "Visitor", // TODO: Input user's last name
+        phone: "", // TODO: Input user's phone number
+        email: "", // TODO: Input user's email address
+        screen_name: "Screen 1", // TODO: Input user's landing page
+        token: "", // TODO: Input user token
+        passthrough: "", // TODO: Pass any additional data
+        language: "en",
+        play_chime: false,
+        analytics_key: "phc_PItaSIruI9BVrpCW3Sr0bagxLvqvb32VdjbWDevxKwr",
+        analytics_host: "https://analytics.latest.pypestream.dev",
+      };
+
+      function insertScript() {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src =
+          "https://web.main.pypestream.studio/launcher.js?ts=" + Date.now();
+        script.async = true;
+        document.body.appendChild(script);
+      }
+
+      if (document.readyState === "complete") {
+        insertScript();
+      } else {
+        window.addEventListener("load", insertScript);
+      }
+    </script>
+  </body>
+</html>
