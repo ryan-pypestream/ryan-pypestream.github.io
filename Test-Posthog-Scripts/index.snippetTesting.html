@@ -60,6 +60,9 @@
       })(document, window.analytics || []);
       analytics.init("phc_eLAYzGtEB0n30FxS39JCG9lKrBEvmwCHeCQVlPOqYk9", {
         api_host: "https://analytics.latest.pypestream.dev",
+        session_recording: {
+          recordCrossOriginIframes: true,
+        },
       });
     </script>
   </head>
