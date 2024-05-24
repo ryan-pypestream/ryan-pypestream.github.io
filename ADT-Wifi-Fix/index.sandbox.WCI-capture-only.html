@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>ADT WifiFix</title>
+    <style>
+      /* Styles go here */
+    </style>
+  </head>
+<body>
+  <header>
+    <div class="logo">Logo</div>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Option 1</a></li>
+        <li><a href="#">Option 2</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div id="chat-container" class="chat-container"></div>
+  <footer>
+    <div class="newsletter">
+      <p>Subscribe to our newsletter for updates and promotions:</p>
+      <input type="email" placeholder="Enter your email">
+      <button>Subscribe</button>
+    </div>
+  </footer>
+  <script>
+  window.pypestreamConfig = {
+    APP_ID: '17b69cb1-7a1e-40fb-8dbe-a0893f327482',
+    first_name: '', // TODO: Input user's first name
+    last_name: 'Visitor', // TODO: Input user's last name
+    phone: '', // TODO: Input user's phone number
+    email: '', // TODO: Input user's email address
+    screen_name: 'Screen 1', // TODO: Input user's landing page
+    token: '', // TODO: Input user token
+    passthrough: '', // TODO: Pass any additional data
+    language: 'en',
+    play_chime: false,
+      // dataset: WCI-only capture
+    analytics_key: 'phc_Bz4c6J9dTM0ptgfGCCEJe1AZkPklpGBIj3ZQBTEpFtL',
+    analytics_host: 'https://analytics.latest.pypestream.dev'
+  };
+
+  function insertScript () {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://web-sandbox.main.pypestream.studio/launcher.js?ts=' + Date.now();
+    script.async = true;
+    document.body.appendChild(script);
+  }
+
+  if (document.readyState === 'complete') {
+    insertScript();
+  } else {
+    window.addEventListener('load', insertScript);
+  }
+</script>
+</body>
+</html>
+
