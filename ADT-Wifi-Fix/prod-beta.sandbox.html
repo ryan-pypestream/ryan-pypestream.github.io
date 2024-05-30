@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>ADT WifiFix - Prod Beta (Sandbox)</title>
+    <style>
+      /* Styles go here */
+    </style>
+<!--    Disable Autocapture for production beta -->
+<!--    <script>-->
+<!--    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);-->
+<!--    posthog.init('phc_DZneFWEpNUgCr4nD1WWss0pYiqPCbZjvRF0mD8sLcgP',{-->
+<!--      api_host:'https://analytics.uat.pypestream.dev',-->
+<!--      session_recording: {-->
+<!--		recordCrossOriginIframes: true,-->
+<!--      }-->
+<!--    })-->
+<!--    </script>-->
+</head>
+<body>
+  <header>
+    <div class="logo">
+        <img src="adtsecurityserviceslogo.png" alt="ADT Security Services Logo" width="200" height="200">
+    </div>
+    <h1>ADT WifiFix</h1>
+    <h2>Production Beta (Sandbox></h2>
+  </header>
+
+
+
+    <style>
+      .launch-container {
+        margin: 0 auto;
+        width: 800px;
+      }
+    </style>
+
+
+    <div class="launch-container" id="chatContainer">
+      <script src="https://web-sandbox.pypestream.com/api-launcher.js"></script>
+       <script>
+
+          Pypestream("config", {
+            domain: 'sandbox',
+            env: 'sandbox'
+          });
+          window.onload = function bootWidget() {
+            Pypestream("boot", {
+              APP_ID: "ac8b27ea-60b6-4a4f-a7e3-37f2e49b9b46",
+              analytics_key: 'phc_DZneFWEpNUgCr4nD1WWss0pYiqPCbZjvRF0mD8sLcgP',
+              analytics_host: 'https://analytics.uat.pypestream.dev'
+            }, document.getElementById('chatContainer'))
+          };
+
+       </script>
+    </div>
+</body>
+</html>
+
