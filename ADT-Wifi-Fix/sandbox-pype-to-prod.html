@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>ADT WifiFix - Sandbox to Prod</title>
+    <style>
+      /* Styles go here */
+    </style>
+    <script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.analytics=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="analytics",u.people=u.people||[],u.toString=function(t){var e="analytics";return"analytics"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.analytics||[]);
+    analytics.init(
+        'phc_ASiSIqcNnraRF8ukt0haxrnyCUcafVMmgiy86gxRSGx',
+        {
+            api_host:'https://analytics.pypestream.com',
+            session_recording: { recordCrossOriginIframes: true }
+        }
+    )
+    </script>
+</head>
+<body>
+  <header>
+    <div class="logo">
+        <img src="adtsecurityserviceslogo.png" alt="ADT Security Services Logo" width="200" height="200">
+    </div>
+    <h1>ADT WifiFix</h1>
+    <h2>Sandbox Pype to Production Analytics</h2>
+    <h3>Last Updated: Sep 9 2024</h3>
+  </header>
+
+    <style>
+      .launch-container {
+        margin: 0 auto;
+        width: 800px;
+      }
+    </style>
+
+
+    <div class="launch-container" id="chatContainer">
+      <script src="https://web-sandbox.pypestream.com/api-launcher.js"></script>
+       <script>
+
+          Pypestream("config", {
+            domain: 'sandbox',
+            env: 'sandbox'
+          });
+          window.onload = function bootWidget() {
+            Pypestream("boot", {
+              APP_ID: "ac8b27ea-60b6-4a4f-a7e3-37f2e49b9b46",
+              analytics_key: 'phc_ASiSIqcNnraRF8ukt0haxrnyCUcafVMmgiy86gxRSGx',
+              analytics_host: 'https://analytics.pypestream.com'
+            }, document.getElementById('chatContainer'))
+          };
+
+       </script>
+    </div>
+</body>
+</html>
+
