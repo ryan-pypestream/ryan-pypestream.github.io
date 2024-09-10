@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!--    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">-->
-<!--    <META HTTP-EQUIV='Content-Security-Policy' CONTENT="default-src 'none';script-src 'sha256-gPjlli1HEdLlR0AZTY971/wQVOdSkl9mEinLnxrPpJw='">-->
+
+    <!-- This policy is based on the response header when fetching https://web-sandbox.pypestream.com/api-launcher.js  -->
+    <meta http-equiv="Content-Security-Policy"
+          content="script-src 'self' https://ryan-pypestream.github.io *.pypestream.pro *.pypestream.com *.pypestream.dev *.gstatic.com *.googleapis.com *.fontawesome.com *.amazonaws.com *.bootstrapcdn.com *.amplitude.com *.launchdarkly.com *.amazonaws.com *.optimizely.com data: wss: blob: 'unsafe-inline' 'unsafe-hashes' 'unsafe-eval';">
+
+    <!--    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">-->
+    <!--    <META HTTP-EQUIV='Content-Security-Policy' CONTENT="default-src 'none';script-src 'sha256-gPjlli1HEdLlR0AZTY971/wQVOdSkl9mEinLnxrPpJw='">-->
 
     <link rel="stylesheet" href="styles.css">
     <title>ADT WifiFix - Sandbox to Prod</title>
@@ -29,7 +34,7 @@
     </div>
     <h1>ADT WifiFix</h1>
     <h2>Sandbox Pype to Production Analytics</h2>
-    <h3>Last Updated: Sep 9 2024</h3>
+    <h3>Last Updated: 2024-09-10 11:03 UTC</h3>
   </header>
 
     <style>
