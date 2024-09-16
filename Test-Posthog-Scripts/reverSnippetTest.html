@@ -57,6 +57,9 @@
       })(document, window.posthog || []);
       posthog.init("phc_ownG69iFYEOq5QtbvGfvuMm8gvmIJ5lnj99eDCuzco2", {
         api_host: "https://analytics.candidate.pypestream.dev",
+        session_recording: {
+          recordCrossOriginIframes: true,
+        },
       });
     </script>
   </head>
