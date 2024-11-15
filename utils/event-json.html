@@ -31,6 +31,12 @@
   </style>
   <script>
     function updateJSON() {
+      // Hide the copy message on the next edit
+      const copyMessage = document.getElementById("copy-message");
+      if (copyMessage) {
+        copyMessage.remove();
+      }
+
       const eventName = document.getElementById("event-name").value;
       const hideUserText = document.getElementById("hide-user-text").checked;
       const hideAppText = document.getElementById("hide-app-text").checked;
@@ -43,7 +49,7 @@
       });
 
       const jsonObject = {
-        event_name: eventName || "My Event",
+        ...(eventName && { event_name: eventName }), // Include event_name only if it's not empty
         ...(Object.keys(properties).length > 0 && { additional_properties: properties }),
         ...(hideUserText && { "hide-user-text": true }),
         ...(hideAppText && { "hide-app-text": true }),
@@ -51,7 +57,6 @@
 
       document.getElementById("json-output").textContent = JSON.stringify(jsonObject, null, 2);
     }
-
     function addPropertyRow() {
       const propertyContainer = document.getElementById("property-container");
       const newRow = document.createElement("div");
@@ -72,16 +77,26 @@
     function copyToClipboard() {
       const jsonOutput = document.getElementById("json-output").textContent;
       navigator.clipboard.writeText(jsonOutput).then(() => {
-        alert("JSON copied to clipboard!");
+        // Display the copy message
+        const copyMessage = document.createElement("div");
+        copyMessage.id = "copy-message";
+        copyMessage.className = "copy-message";
+        copyMessage.textContent = "JSON copied to clipboard!";
+        document.body.appendChild(copyMessage);
       });
     }
+
   </script>
 </head>
 <body>
   <h1>Analytics Event Column JSON Builder</h1>
   <form oninput="updateJSON()">
-    <label for="event-name">Event Name (required):</label>
+
+    <label for="event-name">Event Name:</label>
     <input type="text" id="event-name" placeholder="Enter event name">
+    <p>
+      If event name is not provided, the name of the node will be used for the event name.
+    </p>
 
     <label>Properties:</label>
     <div id="property-container"></div>
@@ -100,5 +115,12 @@
   <h2>Generated JSON</h2>
   <div id="json-output" class="json-output">{}</div>
   <button onclick="copyToClipboard()">Copy JSON to Clipboard</button>
+
+<!--<div>-->
+<!--  Properties which will be added to event automatically:-->
+<!--  -->
+<!--  -->
+<!--</div>-->
+
 </body>
 </html>
