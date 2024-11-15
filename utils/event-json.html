@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Column JSON Builder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, button {
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+    .property-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .json-output {
+      white-space: pre-wrap;
+      background: #f4f4f4;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+  </style>
+  <script>
+    function updateJSON() {
+      const eventName = document.getElementById("event-name").value;
+      const hideUserText = document.getElementById("hide-user-text").checked;
+      const hideAppText = document.getElementById("hide-app-text").checked;
+
+      const properties = {};
+      document.querySelectorAll(".property-row").forEach(row => {
+        const name = row.querySelector(".property-name").value;
+        const value = row.querySelector(".property-value").value;
+        if (name) properties[name] = value;
+      });
+
+      const jsonObject = {
+        event_name: eventName || "My Event",
+        ...(Object.keys(properties).length > 0 && { additional_properties: properties }),
+        ...(hideUserText && { "hide-user-text": true }),
+        ...(hideAppText && { "hide-app-text": true }),
+      };
+
+      document.getElementById("json-output").textContent = JSON.stringify(jsonObject, null, 2);
+    }
+
+    function addPropertyRow() {
+      const propertyContainer = document.getElementById("property-container");
+      const newRow = document.createElement("div");
+      newRow.className = "property-row";
+      newRow.innerHTML = `
+        <input type="text" class="property-name" placeholder="Property Name" oninput="updateJSON()">
+        <input type="text" class="property-value" placeholder="Property Value" oninput="updateJSON()">
+        <button type="button" onclick="removePropertyRow(this)">Remove</button>
+      `;
+      propertyContainer.appendChild(newRow);
+    }
+
+    function removePropertyRow(button) {
+      button.parentElement.remove();
+      updateJSON();
+    }
+
+    function copyToClipboard() {
+      const jsonOutput = document.getElementById("json-output").textContent;
+      navigator.clipboard.writeText(jsonOutput).then(() => {
+        alert("JSON copied to clipboard!");
+      });
+    }
+  </script>
+</head>
+<body>
+  <h1>Analytics Event Column JSON Builder</h1>
+  <form oninput="updateJSON()">
+    <label for="event-name">Event Name (required):</label>
+    <input type="text" id="event-name" placeholder="Enter event name">
+
+    <label>Properties:</label>
+    <div id="property-container"></div>
+    <button type="button" onclick="addPropertyRow()">Add Property</button>
+
+    <label>
+      <input type="checkbox" id="hide-user-text">
+      Hide User Text in screen recordings
+    </label>
+    <label>
+      <input type="checkbox" id="hide-app-text">
+      Hide App Text in screen recordings
+    </label>
+  </form>
+
+  <h2>Generated JSON</h2>
+  <div id="json-output" class="json-output">{}</div>
+  <button onclick="copyToClipboard()">Copy JSON to Clipboard</button>
+</body>
+</html>
