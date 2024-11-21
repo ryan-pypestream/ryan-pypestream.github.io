@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Column JSON Builder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, button {
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+    .property-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .json-output {
+      white-space: pre-wrap;
+      background: #f4f4f4;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+  </style>
+  <script>
+    function updateJSON() {
+      // Hide the copy message on the next edit
+      const copyMessage = document.getElementById("copy-message");
+      if (copyMessage) {
+        copyMessage.remove();
+      }
+
+      const eventName = document.getElementById("event-name").value;
+      const hideUserText = document.getElementById("hide-user-text").checked;
+      const hideAppText = document.getElementById("hide-app-text").checked;
+
+      const properties = {};
+      document.querySelectorAll(".property-row").forEach(row => {
+        const name = row.querySelector(".property-name").value;
+        const value = row.querySelector(".property-value").value;
+        if (name) properties[name] = value;
+      });
+
+      const jsonObject = {
+        ...(eventName && { event_name: eventName }), // Include event_name only if it's not empty
+        ...(Object.keys(properties).length > 0 && { additional_properties: properties }),
+        ...(hideUserText && { "hide-user-text": true }),
+        ...(hideAppText && { "hide-app-text": true }),
+      };
+
+      document.getElementById("json-output").textContent = JSON.stringify(jsonObject, null, 2);
+    }
+    function addPropertyRow() {
+      const propertyContainer = document.getElementById("property-container");
+      const newRow = document.createElement("div");
+      newRow.className = "property-row";
+      newRow.innerHTML = `
+        <input type="text" class="property-name" placeholder="Property Name" oninput="updateJSON()">
+        <input type="text" class="property-value" placeholder="Property Value" oninput="updateJSON()">
+        <button type="button" onclick="removePropertyRow(this)">Remove</button>
+      `;
+      propertyContainer.appendChild(newRow);
+    }
+
+    function removePropertyRow(button) {
+      button.parentElement.remove();
+      updateJSON();
+    }
+
+    function copyToClipboard() {
+      const jsonOutput = document.getElementById("json-output").textContent;
+      navigator.clipboard.writeText(jsonOutput).then(() => {
+        // Display the copy message
+        const copyMessage = document.createElement("div");
+        copyMessage.id = "copy-message";
+        copyMessage.className = "copy-message";
+        copyMessage.textContent = "JSON copied to clipboard!";
+        document.body.appendChild(copyMessage);
+      });
+    }
+
+  </script>
+</head>
+<body>
+  <h1>Analytics Event Column JSON Builder</h1>
+  <form oninput="updateJSON()">
+
+    <label for="event-name">Event Name:</label>
+    <input type="text" id="event-name" placeholder="Enter event name">
+    <p>
+      If event name is not provided, the name of the node will be used for the event name.
+    </p>
+
+    <label>Properties:</label>
+    <div id="property-container"></div>
+    <button type="button" onclick="addPropertyRow()">Add Property</button>
+    <p>
+      You can insert variables in property values, like this: <code>"User Name is {USER_NAME}"</code>.
+    </p>
+    <label>
+      <input type="checkbox" id="hide-user-text">
+      Hide User Text in Screen Recordings
+    </label>
+    <label>
+      <input type="checkbox" id="hide-app-text">
+      Hide App Text in Screen Recordings
+    </label>
+  </form>
+
+  <h2>Generated JSON</h2>
+  <div id="json-output" class="json-output">{}</div>
+  <button onclick="copyToClipboard()">Copy JSON to Clipboard</button>
+
+<!--<div>-->
+<!--  Properties which will be added to event automatically:-->
+<!--  -->
+<!--  -->
+<!--</div>-->
+
+</body>
+</html>
