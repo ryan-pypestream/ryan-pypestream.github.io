@@ -57,6 +57,8 @@
       document.querySelectorAll(".conditional-event").forEach(event => {
         const condition = event.querySelector(".condition").value;
         const subEventName = event.querySelector(".sub-event-name").value;
+        const subHideUserText = event.querySelector(".sub-hide-user-text").checked;
+        const subHideAppText = event.querySelector(".sub-hide-app-text").checked;
 
         const subProperties = {};
         event.querySelectorAll(".sub-property-row").forEach(row => {
@@ -69,6 +71,8 @@
           conditionalEvents[condition] = {
             event_name: subEventName || condition,
             ...(Object.keys(subProperties).length > 0 && { additional_properties: subProperties }),
+            ...(subHideUserText && { "hide-user-text": true }),
+            ...(subHideAppText && { "hide-app-text": true }),
           };
         }
       });
@@ -104,13 +108,20 @@
         <label>Condition:</label>
         <input type="text" class="condition" value="${condition}" placeholder="Condition" oninput="updateJSON()">
         <label>Event Name:</label>
-        <input type="text" class="sub-event-name" value="${eventName || condition}" placeholder="Event Name" oninput="updateJSON()">
+        <input type="text" class="sub-event-name" value="${condition}" placeholder="Event Name" oninput="updateJSON()">
         <label>Properties:</label>
         <div class="sub-property-container"></div>
         <button type="button" onclick="addPropertyRow('.conditional-event:last-child .sub-property-container', 'sub-property-row')">Add Property</button>
+        <label>
+          <input type="checkbox" class="sub-hide-user-text" oninput="updateJSON()"> Hide User Text
+        </label>
+        <label>
+          <input type="checkbox" class="sub-hide-app-text" oninput="updateJSON()"> Hide App Text
+        </label>
         <button type="button" onclick="this.parentElement.remove(); updateJSON()">Remove Conditional Event</button>
       `;
       conditionalContainer.appendChild(newEvent);
+      updateJSON(); // Update JSON after adding a conditional event
     }
 
     function parseWhatsNext() {
