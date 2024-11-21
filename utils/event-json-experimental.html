@@ -10,7 +10,6 @@
       margin: 20px;
     }
     label {
-      display: block;
       margin: 10px 0 5px;
     }
     input, button {
@@ -69,7 +68,7 @@
 
         if (condition) {
           conditionalEvents[condition] = {
-            event_name: subEventName || condition,
+            event_name: subEventName,
             ...(Object.keys(subProperties).length > 0 && { additional_properties: subProperties }),
             ...(subHideUserText && { "hide-user-text": true }),
             ...(subHideAppText && { "hide-app-text": true }),
@@ -108,17 +107,20 @@
         <label>Condition:</label>
         <input type="text" class="condition" value="${condition}" placeholder="Condition" oninput="updateJSON()">
         <label>Event Name:</label>
-        <input type="text" class="sub-event-name" value="${condition}" placeholder="Event Name" oninput="updateJSON()">
+        <input type="text" class="sub-event-name" value="" placeholder="Event Name" oninput="updateJSON()">
+        <label>
+            <input type="checkbox" class="sub-hide-user-text" oninput="updateJSON()"> Hide User Text
+        </label>
+        <label>
+            <input type="checkbox" class="sub-hide-app-text" oninput="updateJSON()"> Hide App Text
+        </label>
+        <div>
         <label>Properties:</label>
-        <div class="sub-property-container"></div>
-        <button type="button" onclick="addPropertyRow('.conditional-event:last-child .sub-property-container', 'sub-property-row')">Add Property</button>
-        <label>
-          <input type="checkbox" class="sub-hide-user-text" oninput="updateJSON()"> Hide User Text
-        </label>
-        <label>
-          <input type="checkbox" class="sub-hide-app-text" oninput="updateJSON()"> Hide App Text
-        </label>
-        <button type="button" onclick="this.parentElement.remove(); updateJSON()">Remove Conditional Event</button>
+          <div class="sub-property-container"></div>
+          <button type="button" onclick="addPropertyRow('.conditional-event:last-child .sub-property-container', 'sub-property-row')">Add Property</button>
+
+          <button type="button" onclick="this.parentElement.remove(); updateJSON()">Remove Conditional Event</button>
+        </div>
       `;
       conditionalContainer.appendChild(newEvent);
       updateJSON(); // Update JSON after adding a conditional event
@@ -149,11 +151,8 @@
   <h1>Event JSON Builder with Conditional Events</h1>
   <form oninput="updateJSON()">
     <label for="event-name">Event Name (optional):</label>
-    <input type="text" id="event-name" placeholder="Enter event name (optional)">
+    <input type="text" id="event-name" placeholder="Event name">
 
-    <label>Properties:</label>
-    <div id="property-container"></div>
-    <button type="button" onclick="addPropertyRow('#property-container')">Add Property</button>
 
     <label>
       <input type="checkbox" id="hide-user-text">
@@ -164,13 +163,25 @@
       Hide App Text in screen recordings
     </label>
 
+    <div id="property-container"></div>
+    <button type="button" onclick="addPropertyRow('#property-container')">Add Property</button>
+
+
     <h2>Conditional Events</h2>
+    <h3>Generate from "What's Next column"</h3>
+    <p>
+      These can be generated from the "What's Next column" of the CSV using format:<br/>
+      true~555|false~777
+    </p>
+    <p>
+      Or they can be added manually
+    </p>
+    <input type="text" id="whats-next" placeholder="Whats Next value">
+    <button type="button" onclick="parseWhatsNext()">Generate Conditional Events</button>
     <div id="conditional-container"></div>
     <button type="button" onclick="addConditionalEvent()">Add Conditional Event</button>
 
-    <h3>Generate from "What's Next column"</h3>
-    <input type="text" id="whats-next" placeholder="Enter in format: true~event1|false~event2">
-    <button type="button" onclick="parseWhatsNext()">Generate</button>
+
   </form>
 
   <h2>Generated JSON</h2>
