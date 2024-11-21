@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Event Column JSON Builder</title>
+  <title>JSON Builder with Conditional Events</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -17,9 +17,9 @@
       padding: 5px;
       margin-bottom: 10px;
     }
-    .property-row {
-      display: flex;
-      gap: 10px;
+    .property-row, .conditional-event {
+      border: 1px solid #ccc;
+      padding: 10px;
       margin-bottom: 10px;
     }
     .json-output {
@@ -27,6 +27,11 @@
       background: #f4f4f4;
       padding: 10px;
       border: 1px solid #ccc;
+    }
+    .copy-message {
+      margin-top: 10px;
+      color: green;
+      font-weight: bold;
     }
   </style>
   <script>
@@ -48,36 +53,78 @@
         if (name) properties[name] = value;
       });
 
+      const conditionalEvents = {};
+      document.querySelectorAll(".conditional-event").forEach(event => {
+        const condition = event.querySelector(".condition").value;
+        const subEventName = event.querySelector(".sub-event-name").value;
+
+        const subProperties = {};
+        event.querySelectorAll(".sub-property-row").forEach(row => {
+          const subName = row.querySelector(".sub-property-name").value;
+          const subValue = row.querySelector(".sub-property-value").value;
+          if (subName) subProperties[subName] = subValue;
+        });
+
+        if (condition) {
+          conditionalEvents[condition] = {
+            event_name: subEventName || condition,
+            ...(Object.keys(subProperties).length > 0 && { additional_properties: subProperties }),
+          };
+        }
+      });
+
       const jsonObject = {
-        ...(eventName && { event_name: eventName }), // Include event_name only if it's not empty
+        ...(eventName && { event_name: eventName }),
         ...(Object.keys(properties).length > 0 && { additional_properties: properties }),
+        ...(Object.keys(conditionalEvents).length > 0 && { conditional_events: conditionalEvents }),
         ...(hideUserText && { "hide-user-text": true }),
         ...(hideAppText && { "hide-app-text": true }),
       };
 
       document.getElementById("json-output").textContent = JSON.stringify(jsonObject, null, 2);
     }
-    function addPropertyRow() {
-      const propertyContainer = document.getElementById("property-container");
+
+    function addPropertyRow(containerSelector, className = "property-row") {
+      const propertyContainer = document.querySelector(containerSelector);
       const newRow = document.createElement("div");
-      newRow.className = "property-row";
+      newRow.className = className;
       newRow.innerHTML = `
-        <input type="text" class="property-name" placeholder="Property Name" oninput="updateJSON()">
-        <input type="text" class="property-value" placeholder="Property Value" oninput="updateJSON()">
-        <button type="button" onclick="removePropertyRow(this)">Remove</button>
+        <input type="text" class="${className === "property-row" ? "property-name" : "sub-property-name"}" placeholder="Property Name" oninput="updateJSON()">
+        <input type="text" class="${className === "property-row" ? "property-value" : "sub-property-value"}" placeholder="Property Value" oninput="updateJSON()">
+        <button type="button" onclick="this.parentElement.remove(); updateJSON()">Remove</button>
       `;
       propertyContainer.appendChild(newRow);
     }
 
-    function removePropertyRow(button) {
-      button.parentElement.remove();
-      updateJSON();
+    function addConditionalEvent(condition = "", eventName = "") {
+      const conditionalContainer = document.getElementById("conditional-container");
+      const newEvent = document.createElement("div");
+      newEvent.className = "conditional-event";
+      newEvent.innerHTML = `
+        <label>Condition:</label>
+        <input type="text" class="condition" value="${condition}" placeholder="Condition" oninput="updateJSON()">
+        <label>Event Name:</label>
+        <input type="text" class="sub-event-name" value="${eventName || condition}" placeholder="Event Name" oninput="updateJSON()">
+        <label>Properties:</label>
+        <div class="sub-property-container"></div>
+        <button type="button" onclick="addPropertyRow('.conditional-event:last-child .sub-property-container', 'sub-property-row')">Add Property</button>
+        <button type="button" onclick="this.parentElement.remove(); updateJSON()">Remove Conditional Event</button>
+      `;
+      conditionalContainer.appendChild(newEvent);
+    }
+
+    function parseWhatsNext() {
+      const input = document.getElementById("whats-next").value;
+      const pairs = input.split("|");
+      pairs.forEach(pair => {
+        const [condition, eventName] = pair.split("~");
+        if (condition) addConditionalEvent(condition, eventName);
+      });
     }
 
     function copyToClipboard() {
       const jsonOutput = document.getElementById("json-output").textContent;
       navigator.clipboard.writeText(jsonOutput).then(() => {
-        // Display the copy message
         const copyMessage = document.createElement("div");
         copyMessage.id = "copy-message";
         copyMessage.className = "copy-message";
@@ -85,44 +132,38 @@
         document.body.appendChild(copyMessage);
       });
     }
-
   </script>
 </head>
 <body>
-  <h1>Analytics Event Column JSON Builder</h1>
+  <h1>Event JSON Builder with Conditional Events</h1>
   <form oninput="updateJSON()">
-
-    <label for="event-name">Event Name:</label>
-    <input type="text" id="event-name" placeholder="Enter event name">
-    <p>
-      If event name is not provided, the name of the node will be used for the event name.
-    </p>
+    <label for="event-name">Event Name (optional):</label>
+    <input type="text" id="event-name" placeholder="Enter event name (optional)">
 
     <label>Properties:</label>
     <div id="property-container"></div>
-    <button type="button" onclick="addPropertyRow()">Add Property</button>
-    <p>
-      You can insert variables in property values, like this: <code>"User Name is {USER_NAME}"</code>.
-    </p>
+    <button type="button" onclick="addPropertyRow('#property-container')">Add Property</button>
+
     <label>
       <input type="checkbox" id="hide-user-text">
-      Hide User Text in Screen Recordings
+      Hide User Text in screen recordings
     </label>
     <label>
       <input type="checkbox" id="hide-app-text">
-      Hide App Text in Screen Recordings
+      Hide App Text in screen recordings
     </label>
+
+    <h2>Conditional Events</h2>
+    <div id="conditional-container"></div>
+    <button type="button" onclick="addConditionalEvent()">Add Conditional Event</button>
+
+    <h3>Generate from "What's Next column"</h3>
+    <input type="text" id="whats-next" placeholder="Enter in format: true~event1|false~event2">
+    <button type="button" onclick="parseWhatsNext()">Generate</button>
   </form>
 
   <h2>Generated JSON</h2>
   <div id="json-output" class="json-output">{}</div>
   <button onclick="copyToClipboard()">Copy JSON to Clipboard</button>
-
-<!--<div>-->
-<!--  Properties which will be added to event automatically:-->
-<!--  -->
-<!--  -->
-<!--</div>-->
-
 </body>
 </html>
