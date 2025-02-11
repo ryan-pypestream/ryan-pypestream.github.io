@@ -9,6 +9,7 @@
         host: 'https://analytics.candidate.pypestream.dev',
         eventsLink: 'https://analytics.candidate.pypestream.dev/events/4208',
         apiKey: 'phc_DjMCgfnRUflsptt4qETWxOmpvf2QpLFyBRiDaAir3uK',
+        studioUrl: 'https://platform.candidate.pypestream.dev/design-studio/bot/Analytics/BackendEvents',
         appId: 'be3284e9-39fd-4128-b149-dc3067730d1a',
         launcherUrl: 'https://web.candidate.pypestream.dev/launcher.js',
         hostPageLoadTime: new Date().toISOString(),
@@ -82,6 +83,10 @@
       <tr>
         <td>API Key</td>
         <td><script>document.write(config.apiKey);</script></td>
+      </tr>
+      <tr>
+        <td>Studio URL</td>
+        <td><script>document.write("<a href='" + config.studioUrl + "'>" + config.studioUrl + "</a>");</script></td>
       </tr>
       <tr>
         <td>APP_ID</td>
