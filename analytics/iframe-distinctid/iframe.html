@@ -10,12 +10,13 @@
                         isIdentifiedID: false,
                         // sessionID: 'session_id_of_user_session',
                     },
-                }).loaded(function(ph) {
-                    const distinct_id = ph.get_distinct_id();
-                    console.log("child posthog distinct_id: " + distinct_id);
+                    loaded: function(ph) {
+                        const distinct_id = ph.get_distinct_id();
+                        console.log("child posthog distinct_id: " + distinct_id);
 
-                    const textbox = document.getElementById('iframe-message-box');
-                    textbox.value = textbox.value + "\nChild Distinct ID: " + distinct_id;
+                        const textbox = document.getElementById('iframe-message-box');
+                        textbox.value = textbox.value + "\nChild Distinct ID: " + distinct_id;
+                    }
                 });
             }
 
