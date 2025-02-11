@@ -3,18 +3,19 @@
 <head>
     <script>
       const config = {
-        pageHeader: 'Analytics Backend Events - Live',
-        project: 'Analytics Backend Events',
+        pageHeader: 'iframe distinct_id test - Live',
+        project: 'iframe test',
         dataset: 'Production',
-        host: 'https://analytics.candidate.pypestream.dev',
-        eventsLink: 'https://analytics.candidate.pypestream.dev/events/4208',
-        apiKey: 'phc_DjMCgfnRUflsptt4qETWxOmpvf2QpLFyBRiDaAir3uK',
-        studioUrl: 'https://platform.candidate.pypestream.dev/design-studio/bot/Analytics/BackendEvents',
-        appId: 'be3284e9-39fd-4128-b149-dc3067730d1a',
-        launcherUrl: 'https://web.candidate.pypestream.dev/launcher.js',
+        host: 'https://analytics.pypestream.com',
+        eventsLink: 'https://analytics.pypestream.com/events/485',
+        apiKey: 'phc_HC2AiOAsHpd4YUOlEydqYv445pFX2ZaOZ2gxA815TJc',
+        // studioUrl: 'https://platform.candidate.pypestream.dev/design-studio/bot/Analytics/BackendEvents',
+        // appId: 'be3284e9-39fd-4128-b149-dc3067730d1a',
+        launcherUrl: 'simple-launcher.js',
         hostPageLoadTime: new Date().toISOString(),
       };
     </script>
+    <!-- Posthog snippet start -->
     <script>
     !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
     posthog.init(config.apiKey,
@@ -23,19 +24,36 @@
             session_recording: {
                 recordCrossOriginIframes: true,
             },
-            loaded: function (ph) {
-                ph.register_once({
-                    // add the current UTC time in ISO format
-                    'Host Page Load Time': config.hostPageLoadTime,
-                })
+            update_textarea(distinct_id) {
+                // Create textbox
+                const textbox = document.createElement('textarea');
+                textbox.id = 'parent-message-box';
+                textbox.style.cssText = `
+                    width: 95%;
+                    height: 80px;
+                    margin: 10px;
+                    padding: 5px;
+                    resize: none;
+                `;
+
+                textbox.value = "Host Page distinct_id: " + distinct_id;
+                document.body.appendChild(textbox);
+            }, loaded: function (ph) {
+                // const distinct_id = ph.get_distinct_id();
+                //
+                // window.pypestreamConfig.distinct_id = distinct_id;
+                //
+                // console.log("Host Page distinct_id: " + distinct_id)
+                // this.update_textarea(distinct_id);
             },
         }
     )
-</script>
+    </script>
+    <!-- Posthog snippet end -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Analytics Backend Events</title>
+    <title>Analytics iframe test</title>
     <style>
       /* Styles go here */
       table {
@@ -84,14 +102,14 @@
         <td>API Key</td>
         <td><script>document.write(config.apiKey);</script></td>
       </tr>
-      <tr>
-        <td>Studio URL</td>
-        <td><script>document.write("<a href='" + config.studioUrl + "'>" + config.studioUrl + "</a>");</script></td>
-      </tr>
-      <tr>
-        <td>APP_ID</td>
-        <td><script>document.write(config.appId);</script></td>
-      </tr>
+<!--      <tr>-->
+<!--        <td>Studio URL</td>-->
+<!--        <td><script>document.write("<a href='" + config.studioUrl + "'>" + config.studioUrl + "</a>");</script></td>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td>APP_ID</td>-->
+<!--        <td><script>document.write(config.appId);</script></td>-->
+<!--      </tr>-->
       <tr>
         <td>Launcher URL</td>
         <td><script>document.write(config.launcherUrl);</script></td>
@@ -128,11 +146,61 @@
       document.body.appendChild(script);
     }
 
-    if (document.readyState === 'complete') {
-      insertScript();
-    } else {
-      window.addEventListener('load', insertScript);
+
+    // Original logic
+    // if (document.readyState === 'complete') {
+    //   insertScript();
+    // } else {
+    //   window.addEventListener('load', insertScript);
+    // }
+
+    function waitForPostHog(callback) {
+        // Check if posthog exists
+        if (typeof window.posthog === 'undefined') {
+            // PostHog doesn't exist, so use legacy logic to load the script
+            if (document.readyState === 'complete') {
+                callback();
+            } else {
+                window.addEventListener('load', callback);
+            }
+            return;
+        }
+
+        // PostHog exists, wait for it to load and get distinct_id
+        const checkPostHog = () => {
+            if (window.posthog.get_distinct_id && window.posthog.get_distinct_id()) {
+                const distinct_id = window.posthog.get_distinct_id();
+                window.pypestreamConfig.distinct_id = distinct_id;
+                update_textarea(distinct_id);
+                callback();
+            } else {
+                setTimeout(checkPostHog, 100);
+            }
+        };
+        checkPostHog();
     }
+
+    function update_textarea(distinct_id) {
+        // Create textbox
+        const textbox = document.createElement('textarea');
+        textbox.id = 'parent-message-box';
+        textbox.style.cssText = `
+            width: 95%;
+            height: 80px;
+            margin: 10px;
+            padding: 5px;
+            resize: none;
+        `;
+
+        textbox.value = "Host Page distinct_id: " + distinct_id;
+        document.body.appendChild(textbox);
+    }
+
+    waitForPostHog(insertScript);
   </script>
+
+<!--    <textarea id="parent-message-box" style="width: 95%; height: 80px; margin: 10px; padding: 5px; resize: none;">-->
+
+<!--    </textarea>-->
 </body>
 </html>
