@@ -6,6 +6,9 @@
                 posthog.init(apiKey, {
                     api_host: apiHost,
                     bootstrap: {
+                        /*
+                         * Use the distinctID passed from the pypestreamConfig object
+                         */ 
                         distinctID: distinctID,
                         isIdentifiedID: false,
                         // sessionID: 'session_id_of_user_session',
@@ -20,6 +23,11 @@
                 });
             }
 
+            function appendToTextBox(message) {
+                const textbox = document.getElementById('iframe-message-box');
+                textbox.value = textbox.value + "\n" + message;
+            }
+
             window.addEventListener('message', function(event) {
                 console.log(event.data);
                 if (event.data.type === 'CONFIG_UPDATE') {
@@ -28,20 +36,52 @@
                 console.log("iframe received config: ");
                 console.log(window.pypestreamConfig);
 
-                const textbox = document.getElementById('iframe-message-box');
                 const distinctID = window.pypestreamConfig.distinct_id;
-                const apiHost = window.pypestreamConfig.api_host;
-                const apiKey = window.pypestreamConfig.api_key;
-
-                textbox.value = "Parent Distinct ID: " + distinctID;
+                const apiHost = window.pypestreamConfig.analytics_host;
+                const apiKey = window.pypestreamConfig.analytics_key;
+                appendToTextBox("Parent Distinct ID: " + distinctID);
 
                 initPostHog(apiHost, apiKey, distinctID);
             });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const identifyForm = document.getElementById('identify-form');
+                
+                identifyForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const userIdentity = document.getElementById('user-identity').value;
+                    
+                    // Empty function where you can add your PostHog identify logic
+                    identifyUser(userIdentity);
+                });
+            });
+
+            function identifyUser(userIdentity) {
+                // This is where you can implement the PostHog identify call
+                try {
+                    result = window.posthog.identify(userIdentity);
+                }
+                catch (e) {
+                    console.error('Error identifying user:', e);
+                    appendToTextBox('Error identifying user: ' + e);
+                }
+                console.log('Identified user as:', userIdentity);
+                appendToTextBox('Identified user as: ' + userIdentity);
+                console.log("Identify result: ", result);
+            }
         </script>
     </head>
     <body>
-        <textarea id="iframe-message-box" style="width: 95%; height: 80px; margin: 10px; padding: 5px; resize: none;">
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin: 10px;">
+            <textarea id="iframe-message-box" style="width: 800px; height: 80px; padding: 5px; resize: none;">
 
-        </textarea>
+            </textarea>
+            
+            <form id="identify-form" style="display: flex; flex-direction: column; gap: 5px;">
+                <label for="user-identity">Identify current user as:</label>
+                <input type="text" id="user-identity" style="width: 300px;">
+                <button type="submit">set user identity</button>
+            </form>
+        </div>
     </body>
 </html>
