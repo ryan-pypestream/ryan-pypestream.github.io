@@ -1,0 +1,88 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.upper-section {
+    display: flex;
+    padding: 20px;
+    background: #f9f9f9; /* Light background for the form area */
+    border-bottom: 2px solid black; /* Visual border for debugging */
+}
+
+.iframe-details, .cropped-iframe-form {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.iframe-details form {
+    display: flex;
+    flex-direction: column;
+}
+
+.cropped-iframe-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+textarea {
+    width: 100%;
+    height: 150px; /* Larger textarea for easier editing */
+    margin-top: 20px;
+}
+
+.lower-section {
+    display: flex;
+    flex: 1;
+}
+
+.iframe-container, .preview-section {
+    flex: 1;
+    position: relative;
+    height: 100%;
+}
+
+#iframeDisplay, #overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#iframeDisplay {
+    border: 2px solid red; /* Red border for the iframe for visual debugging */
+}
+
+#overlay {
+    background: rgba(255, 255, 255, 0); /* Fully transparent */
+    pointer-events: auto; /* Capture all mouse events */
+    border: 2px solid blue; /* Blue border for the overlay for visual debugging */
+}
+
+.preview-section {
+    border-left: 1px solid #ccc;
+    overflow: auto;
+    padding: 20px;
+    border: 2px solid green; /* Green border for the preview section for visual debugging */
+}
+
+#selection-properties {
+    margin-top: 20px;
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.preview-section iframe {
+    border: 1px solid #ccc;
+}
+

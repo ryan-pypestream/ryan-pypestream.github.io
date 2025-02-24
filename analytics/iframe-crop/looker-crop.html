@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Looker Report Embed Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="upper-section">
+        <div class="iframe-details">
+            <form id="urlForm">
+                <label for="url">Looker URL: (a '/embed' prefix will be added to the path of this URL)</label>
+                <input type="text" id="url" name="url" value="https://lookerstudio.google.com/reporting/1602cbde-4cce-4be4-9741-99750baa02c8/page/anDoD" style="width: 600px;" required>
+                <br/>
+                <button type="submit">Load Page into Cropping Tool</button>
+            </form>
+
+            <div id="selection-properties"></div>
+
+            Click and drag in the window below to select the area to "crop"
+
+        </div>
+        <div class="cropped-iframe-form">
+            Cropped iframe HTML
+            <textarea id="outputHtml"></textarea>
+            <button id="previewBtn">Preview</button>
+        </div>
+    </div>
+    <div class="lower-section">
+        <div class="iframe-container">
+            <iframe id="iframeDisplay" src="about:blank"></iframe>
+
+            <!-- This overlay is here to block all mouse events from 
+             getting to the iframe underneath so that we can do a rectangular selection for cropping-->
+            <div id="overlay"></div>
+        </div>
+        <div class="preview-section" id="previewSection"></div>
+    </div>
+    <script src="script.js"></script>
+</div>
+</body>
+</html>
