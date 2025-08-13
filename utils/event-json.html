@@ -4,29 +4,364 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Event Column JSON Builder</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  
   <style>
+    :root {
+      --primary-color: #6b7280;
+      --secondary-color: #64748b;
+      --success-color: #10b981;
+      --danger-color: #ef4444;
+      --warning-color: #f59e0b;
+      --bg-light: #f8fafc;
+      --bg-dark: #1e293b;
+
+      /* Light mode colors */
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --border-color: #e2e8f0;
+      --card-bg: rgba(255, 255, 255, 0.98);
+      --form-bg: white;
+      --form-header-bg: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    }
+
+    [data-theme="dark"] {
+      /* Dark mode colors */
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border-color: #334155;
+      --card-bg: rgba(30, 41, 59, 0.98);
+      --form-bg: #1e293b;
+      --form-header-bg: linear-gradient(135deg, #334155, #475569);
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text-primary);
+      transition: background 0.3s ease, color 0.3s ease;
     }
+
+    .main-container {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin: 1rem auto;
+      max-width: 1200px;
+      transition: background 0.3s ease;
+    }
+
+    .header-section {
+      background: linear-gradient(135deg, var(--primary-color), #9ca3af);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 16px 16px 0 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .header-section h1 {
+      margin: 0;
+      font-weight: 600;
+      font-size: 2.5rem;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    .form-section {
+      background: var(--form-bg);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      margin-bottom: 1rem;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .form-section:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      transform: translateY(-1px);
+    }
+
+    .form-section .card-header {
+      background: var(--form-header-bg);
+      border-bottom: 1px solid var(--primary-color);
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color), #9ca3af);
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 6px rgba(107, 114, 128, 0.15);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px rgba(107, 114, 128, 0.2);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--success-color), #34d399);
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger-color), #f87171);
+      border: none;
+      border-radius: 6px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control, .form-select {
+      border-radius: 10px;
+      border: 2px solid var(--border-color);
+      padding: 0.6rem 1rem;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      background: var(--form-bg);
+      color: var(--text-primary);
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
+      background: var(--form-bg);
+      color: var(--text-primary);
+    }
+
+    .form-control::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+
+    .form-check-label {
+      color: var(--text-primary);
+    }
+
+    .card-header h5 {
+      color: var(--text-primary);
+    }
+
     label {
-      display: block;
-      margin: 10px 0 5px;
+      color: var(--text-primary);
     }
-    input, button {
-      padding: 5px;
-      margin-bottom: 10px;
+
+    /* Ensure code elements are visible in both themes */
+    code {
+      background-color: var(--border-color);
+      color: var(--text-primary);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
     }
-    .property-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
+
+    /* Fix Bootstrap text utilities for dark mode */
+    [data-theme="dark"] .text-primary {
+      color: var(--text-primary) !important;
     }
+
+    [data-theme="dark"] .text-light {
+      color: var(--text-primary) !important;
+    }
+
+    /* JSON Syntax Highlighting Styles */
+    .json-key {
+      color: #8DD6F9;
+      font-weight: 500;
+    }
+
+    .json-string {
+      color: #87D96A;
+    }
+
+    .json-number {
+      color: #F78C6C;
+    }
+
+    .json-boolean {
+      color: #C792EA;
+      font-weight: 500;
+    }
+
+    .json-null {
+      color: #FF5370;
+      font-style: italic;
+    }
+
+    /* Split-view Layout Styles */
+    .json-sticky-container {
+      position: sticky;
+      top: 1rem;
+      height: fit-content;
+    }
+
+    .json-output-section .json-output {
+      max-height: calc(100vh - 200px);
+      min-height: 300px;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 991.98px) {
+      .json-sticky-container {
+        position: static;
+        margin-top: 2rem;
+      }
+    }
+
+    .json-output-section {
+      background: var(--form-bg);
+      color: var(--text-primary);
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
     .json-output {
+      background: var(--form-bg);
+      color: var(--text-secondary);
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
       white-space: pre-wrap;
-      background: #f4f4f4;
-      padding: 10px;
-      border: 1px solid #ccc;
+      padding: 1rem;
+      margin: 0;
+      border-radius: 0 0 15px 15px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .copy-button {
+      background: linear-gradient(135deg, var(--success-color), #34d399);
+      border: none;
+      color: white;
+      padding: 0.6rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+    }
+
+    .copy-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
+
+    .form-check-input:checked {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    .property-row, .global-props-row, .retention-row, .unset-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      align-items: end;
+    }
+
+    .icon-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-description {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+      font-style: italic;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-section {
+      animation: slideIn 0.5s ease-out;
+    }
+
+    /* Dark mode specific JSON colors */
+    [data-theme="dark"] .json-key {
+      color: #8DD6F9;
+    }
+    
+    [data-theme="dark"] .json-string {
+      color: #87D96A;
+    }
+    
+    [data-theme="dark"] .json-number {
+      color: #F78C6C;
+    }
+    
+    [data-theme="dark"] .json-boolean {
+      color: #C792EA;
+    }
+    
+    [data-theme="dark"] .json-null {
+      color: #FF5370;
+    }
+
+    /* Light mode JSON colors */
+    [data-theme="light"] .json-key, .json-key {
+      color: #0369a1;
+    }
+
+    [data-theme="light"] .json-string, .json-string {
+      color: #16a34a;
+    }
+
+    [data-theme="light"] .json-number, .json-number {
+      color: #dc2626;
+    }
+
+    [data-theme="light"] .json-boolean, .json-boolean {
+      color: #9333ea;
+    }
+
+    [data-theme="light"] .json-null, .json-null {
+      color: #ef4444;
     }
   </style>
   <script>
@@ -48,28 +383,144 @@
         if (name) properties[name] = value;
       });
 
+      // Collect global_props_set
+      const globalPropsSet = {};
+      document.querySelectorAll(".global-props-row").forEach(row => {
+        const key = row.querySelector(".global-key").value;
+        const type = row.querySelector(".global-type").value;
+        const value = row.querySelector(".global-value").value;
+        if (key && value) {
+          const processedKey = type === 'int' ? parseInt(key) || key : key;
+          const processedValue = type === 'int' ? parseInt(value) || value : value;
+          globalPropsSet[processedKey] = processedValue;
+        }
+      });
+
+      // Collect global_props_unset
+      const globalPropsUnset = [];
+      document.querySelectorAll(".unset-row").forEach(row => {
+        const value = row.querySelector(".unset-value").value;
+        if (value) globalPropsUnset.push(value);
+      });
+
+      // Collect retention_days
+      const retentionDays = {};
+      document.querySelectorAll(".retention-row").forEach(row => {
+        const key = row.querySelector(".retention-key").value;
+        const value = parseInt(row.querySelector(".retention-value").value);
+        if (key && value > 0) retentionDays[key] = value;
+      });
+
       const jsonObject = {
         ...(eventName && { event_name: eventName }), // Include event_name only if it's not empty
         ...(Object.keys(properties).length > 0 && { additional_properties: properties }),
+        ...(Object.keys(globalPropsSet).length > 0 && { global_props_set: globalPropsSet }),
+        ...(globalPropsUnset.length > 0 && { global_props_unset: globalPropsUnset }),
+        ...(Object.keys(retentionDays).length > 0 && { retention_days: retentionDays }),
         ...(hideUserText && { "hide-user-text": true }),
         ...(hideAppText && { "hide-app-text": true }),
       };
 
-      document.getElementById("json-output").textContent = JSON.stringify(jsonObject, null, 2);
+      const jsonString = JSON.stringify(jsonObject, null, 2);
+      document.getElementById("json-output").innerHTML = syntaxHighlight(jsonString);
+    }
+
+    function syntaxHighlight(json) {
+      if (typeof json != "string") {
+        json = JSON.stringify(json, undefined, 2);
+      }
+      json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'json-number';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'json-key';
+          } else {
+            cls = 'json-string';
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'json-boolean';
+        } else if (/null/.test(match)) {
+          cls = 'json-null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+      });
     }
     function addPropertyRow() {
       const propertyContainer = document.getElementById("property-container");
       const newRow = document.createElement("div");
       newRow.className = "property-row";
       newRow.innerHTML = `
-        <input type="text" class="property-name" placeholder="Property Name" oninput="updateJSON()">
-        <input type="text" class="property-value" placeholder="Property Value" oninput="updateJSON()">
-        <button type="button" onclick="removePropertyRow(this)">Remove</button>
+        <input type="text" class="property-name form-control" placeholder="Property Name" oninput="updateJSON()">
+        <input type="text" class="property-value form-control" placeholder="Property Value" oninput="updateJSON()">
+        <button type="button" class="btn btn-danger btn-sm" onclick="removePropertyRow(this)">
+          <i class="bi bi-trash"></i> Remove
+        </button>
       `;
       propertyContainer.appendChild(newRow);
     }
 
     function removePropertyRow(button) {
+      button.parentElement.remove();
+      updateJSON();
+    }
+
+    function addGlobalPropsRow() {
+      const container = document.getElementById("global-props-container");
+      const newRow = document.createElement("div");
+      newRow.className = "global-props-row";
+      newRow.innerHTML = `
+        <select class="global-type form-select" onchange="updateJSON()">
+          <option value="str">String</option>
+          <option value="int">Integer</option>
+        </select>
+        <input type="text" class="global-key form-control" placeholder="Key" oninput="updateJSON()">
+        <input type="text" class="global-value form-control" placeholder="Value" oninput="updateJSON()">
+        <button type="button" class="btn btn-danger btn-sm" onclick="removeGlobalPropsRow(this)">
+          <i class="bi bi-trash"></i> Remove
+        </button>
+      `;
+      container.appendChild(newRow);
+    }
+
+    function removeGlobalPropsRow(button) {
+      button.parentElement.remove();
+      updateJSON();
+    }
+
+    function addUnsetRow() {
+      const container = document.getElementById("unset-container");
+      const newRow = document.createElement("div");
+      newRow.className = "unset-row";
+      newRow.innerHTML = `
+        <input type="text" class="unset-value form-control" placeholder="Property Name" oninput="updateJSON()">
+        <button type="button" class="btn btn-danger btn-sm" onclick="removeUnsetRow(this)">
+          <i class="bi bi-trash"></i> Remove
+        </button>
+      `;
+      container.appendChild(newRow);
+    }
+
+    function removeUnsetRow(button) {
+      button.parentElement.remove();
+      updateJSON();
+    }
+
+    function addRetentionRow() {
+      const container = document.getElementById("retention-container");
+      const newRow = document.createElement("div");
+      newRow.className = "retention-row";
+      newRow.innerHTML = `
+        <input type="text" class="retention-key form-control" placeholder="Property Key" oninput="updateJSON()">
+        <input type="number" class="retention-value form-control" placeholder="Days (>0)" min="1" oninput="updateJSON()">
+        <button type="button" class="btn btn-danger btn-sm" onclick="removeRetentionRow(this)">
+          <i class="bi bi-trash"></i> Remove
+        </button>
+      `;
+      container.appendChild(newRow);
+    }
+
+    function removeRetentionRow(button) {
       button.parentElement.remove();
       updateJSON();
     }
@@ -81,42 +532,247 @@
         const copyMessage = document.createElement("div");
         copyMessage.id = "copy-message";
         copyMessage.className = "copy-message";
-        copyMessage.textContent = "JSON copied to clipboard!";
+        copyMessage.textContent = "Pretty JSON copied to clipboard!";
         document.body.appendChild(copyMessage);
       });
+    }
+
+    function copyMinifiedToClipboard() {
+      // Get the raw JSON data and minify it
+      const eventName = document.getElementById("event-name").value;
+      const hideUserText = document.getElementById("hide-user-text").checked;
+      const hideAppText = document.getElementById("hide-app-text").checked;
+
+      const properties = {};
+      document.querySelectorAll(".property-row").forEach(row => {
+        const name = row.querySelector(".property-name").value;
+        const value = row.querySelector(".property-value").value;
+        if (name) properties[name] = value;
+      });
+
+      // Collect global_props_set
+      const globalPropsSet = {};
+      document.querySelectorAll(".global-props-row").forEach(row => {
+        const key = row.querySelector(".global-key").value;
+        const type = row.querySelector(".global-type").value;
+        const value = row.querySelector(".global-value").value;
+        if (key && value) {
+          const processedKey = type === 'int' ? parseInt(key) || key : key;
+          const processedValue = type === 'int' ? parseInt(value) || value : value;
+          globalPropsSet[processedKey] = processedValue;
+        }
+      });
+
+      // Collect global_props_unset
+      const globalPropsUnset = [];
+      document.querySelectorAll(".unset-row").forEach(row => {
+        const value = row.querySelector(".unset-value").value;
+        if (value) globalPropsUnset.push(value);
+      });
+
+      // Collect retention_days
+      const retentionDays = {};
+      document.querySelectorAll(".retention-row").forEach(row => {
+        const key = row.querySelector(".retention-key").value;
+        const value = parseInt(row.querySelector(".retention-value").value);
+        if (key && value > 0) retentionDays[key] = value;
+      });
+
+      const jsonObject = {
+        ...(eventName && { event_name: eventName }),
+        ...(Object.keys(properties).length > 0 && { additional_properties: properties }),
+        ...(Object.keys(globalPropsSet).length > 0 && { global_props_set: globalPropsSet }),
+        ...(globalPropsUnset.length > 0 && { global_props_unset: globalPropsUnset }),
+        ...(Object.keys(retentionDays).length > 0 && { retention_days: retentionDays }),
+        ...(hideUserText && { "hide-user-text": true }),
+        ...(hideAppText && { "hide-app-text": true }),
+      };
+
+      const minifiedJson = JSON.stringify(jsonObject);
+      navigator.clipboard.writeText(minifiedJson).then(() => {
+        // Display the copy message
+        const copyMessage = document.createElement("div");
+        copyMessage.id = "copy-message";
+        copyMessage.className = "copy-message";
+        copyMessage.textContent = "Minified JSON copied to clipboard!";
+        document.body.appendChild(copyMessage);
+      });
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute("data-theme");
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", newTheme);
+
+      // Update the theme toggle button text and icon
+      const themeText = document.getElementById("theme-text");
+      const themeIcon = document.getElementById("theme-icon");
+      if (newTheme === "dark") {
+        themeText.textContent = "Light";
+        themeIcon.classList.remove("bi-moon-fill");
+        themeIcon.classList.add("bi-sun-fill");
+      } else {
+        themeText.textContent = "Dark";
+        themeIcon.classList.remove("bi-sun-fill");
+        themeIcon.classList.add("bi-moon-fill");
+      }
     }
 
   </script>
 </head>
 <body>
-  <h1>Analytics Event Column JSON Builder</h1>
-  <form oninput="updateJSON()">
+  <div class="container-fluid">
+    <div class="main-container">
+      <!-- Header Section -->
+      <div class="header-section">
+        <button class="theme-toggle" onclick="toggleTheme()" id="theme-toggle">
+          <i class="bi bi-moon-fill" id="theme-icon"></i>
+          <span id="theme-text">Dark</span>
+        </button>
+        <h1><i class="bi bi-gear-fill me-3"></i>Analytics Event Column JSON Builder</h1>
+      </div>
 
-    <label for="event-name">Event Name:</label>
-    <input type="text" id="event-name" placeholder="Enter event name">
-    <p>
-      If event name is not provided, the name of the node will be used for the event name.
-    </p>
+      <div class="p-3">
+        <div class="row g-3">
+          <!-- Left Column - Form Sections -->
+          <div class="col-lg-7">
+            <form oninput="updateJSON()">
+              <!-- Event Name Section -->
+              <div class="card form-section">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="bi bi-tag-fill me-2"></i>Event Name</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <input type="text" id="event-name" class="form-control" placeholder="Enter event name">
+                  </div>
+                  <div class="section-description">
+                    <i class="bi bi-info-circle me-1"></i>
+                    If event name is not provided, the name of the node will be used for the event name.
+                  </div>
+                </div>
+              </div>
 
-    <label>Properties:</label>
-    <div id="property-container"></div>
-    <button type="button" onclick="addPropertyRow()">Add Property</button>
-    <p>
-      You can insert variables in property values, like this: <code>"User Name is {USER_NAME}"</code>.
-    </p>
-    <label>
-      <input type="checkbox" id="hide-user-text">
-      Hide User Text in Screen Recordings
-    </label>
-    <label>
-      <input type="checkbox" id="hide-app-text">
-      Hide App Text in Screen Recordings
-    </label>
-  </form>
+              <!-- Screen Recording Options Section -->
+              <div class="card form-section">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="bi bi-camera-video me-2"></i>Screen Recording Options</h5>
+                </div>
+                <div class="card-body">
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="hide-user-text">
+                    <label class="form-check-label" for="hide-user-text">
+                      <i class="bi bi-eye-slash me-2"></i>Hide User Text in Screen Recordings
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="hide-app-text">
+                    <label class="form-check-label" for="hide-app-text">
+                      <i class="bi bi-eye-slash me-2"></i>Hide App Text in Screen Recordings
+                    </label>
+                  </div>
+                </div>
+              </div>
 
-  <h2>Generated JSON</h2>
-  <div id="json-output" class="json-output">{}</div>
-  <button onclick="copyToClipboard()">Copy JSON to Clipboard</button>
+              <!-- Properties Section -->
+              <div class="card form-section">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i>Properties</h5>
+                </div>
+                <div class="card-body">
+                  <div id="property-container"></div>
+                  <button type="button" class="btn btn-primary icon-btn" onclick="addPropertyRow()">
+                    <i class="bi bi-plus-circle"></i> Add Property
+                  </button>
+                  <div class="section-description mt-3">
+                    <i class="bi bi-lightbulb me-1"></i>
+                    You can insert variables in property values, like this: <code class="text-primary">"User Name is {USER_NAME}"</code>.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Global Props Set Section -->
+              <div class="card form-section">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="bi bi-globe me-2"></i>Global Props Set</h5>
+                </div>
+                <div class="card-body">
+                  <div class="section-description">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Global properties are applied to all events in all future nodes once a node with "global_props_set" is visited.
+                  </div>
+                  <div id="global-props-container"></div>
+                  <button type="button" class="btn btn-primary icon-btn" onclick="addGlobalPropsRow()">
+                    <i class="bi bi-plus-circle"></i> Add Global Property
+                  </button>
+                </div>
+              </div>
+
+              <!-- Global Props Unset Section -->
+              <div class="card form-section">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="bi bi-globe-americas me-2"></i>Global Props Unset</h5>
+                </div>
+                <div class="card-body">
+                  <div class="section-description">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Once a node with "global_props_unset" is encountered, the specified global properties are removed and will no longer be applied to future events.
+                  </div>
+                  <div id="unset-container"></div>
+                  <button type="button" class="btn btn-primary icon-btn" onclick="addUnsetRow()">
+                    <i class="bi bi-plus-circle"></i> Add Property to Unset
+                  </button>
+                </div>
+              </div>
+
+              <!-- Retention Days Section -->
+              <div class="card form-section">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="bi bi-calendar-week me-2"></i>Retention Days</h5>
+                </div>
+                <div class="card-body">
+                  <div class="section-description">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Retention days specify for how many days an utterance-property retains its value in database. After retention period is passed, the value will be redacted to "&lt;--expired--&gt;"
+                  </div>
+                  <div id="retention-container"></div>
+                  <button type="button" class="btn btn-primary icon-btn" onclick="addRetentionRow()">
+                    <i class="bi bi-plus-circle"></i> Add Retention Setting
+                  </button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+          <!-- Right Column - JSON Output (Fixed) -->
+          <div class="col-lg-5">
+            <div class="json-sticky-container">
+              <!-- Generated JSON Section -->
+              <div class="card json-output-section">
+                <div class="card-header">
+                  <h5 class="mb-0 text-light"><i class="bi bi-code-slash me-2"></i>Generated JSON</h5>
+                </div>
+                <div id="json-output" class="json-output">{}</div>
+              </div>
+
+              <div class="text-center mt-3">
+                <button class="btn copy-button icon-btn me-2" onclick="copyToClipboard()">
+                  <i class="bi bi-clipboard"></i> Copy Pretty JSON
+                </button>
+                <button class="btn copy-button icon-btn" onclick="copyMinifiedToClipboard()">
+                  <i class="bi bi-clipboard-check"></i> Copy Minified JSON
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (Optional for enhanced interactions) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!--<div>-->
 <!--  Properties which will be added to event automatically:-->
