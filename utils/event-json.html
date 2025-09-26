@@ -383,7 +383,7 @@
         if (name) properties[name] = value;
       });
 
-      // Collect global_props_set
+      // Collect global_props
       const globalPropsSet = {};
       document.querySelectorAll(".global-props-row").forEach(row => {
         const key = row.querySelector(".global-key").value;
@@ -414,7 +414,7 @@
       const jsonObject = {
         ...(eventName && { event_name: eventName }), // Include event_name only if it's not empty
         ...(Object.keys(properties).length > 0 && { additional_properties: properties }),
-        ...(Object.keys(globalPropsSet).length > 0 && { global_props_set: globalPropsSet }),
+        ...(Object.keys(globalPropsSet).length > 0 && { global_props: globalPropsSet }),
         ...(globalPropsUnset.length > 0 && { global_props_unset: globalPropsUnset }),
         ...(Object.keys(retentionDays).length > 0 && { retention_days: retentionDays }),
         ...(hideUserText && { "hide-user-text": true }),
@@ -550,7 +550,7 @@
         if (name) properties[name] = value;
       });
 
-      // Collect global_props_set
+      // Collect global_props
       const globalPropsSet = {};
       document.querySelectorAll(".global-props-row").forEach(row => {
         const key = row.querySelector(".global-key").value;
@@ -581,7 +581,7 @@
       const jsonObject = {
         ...(eventName && { event_name: eventName }),
         ...(Object.keys(properties).length > 0 && { additional_properties: properties }),
-        ...(Object.keys(globalPropsSet).length > 0 && { global_props_set: globalPropsSet }),
+        ...(Object.keys(globalPropsSet).length > 0 && { global_props: globalPropsSet }),
         ...(globalPropsUnset.length > 0 && { global_props_unset: globalPropsUnset }),
         ...(Object.keys(retentionDays).length > 0 && { retention_days: retentionDays }),
         ...(hideUserText && { "hide-user-text": true }),
@@ -707,7 +707,7 @@
                 <div class="card-body">
                   <div class="section-description">
                     <i class="bi bi-info-circle me-1"></i>
-                    Global properties are applied to all events in all future nodes once a node with "global_props_set" is visited.
+                    Global properties are applied to all events in all future nodes once a node with "global_props" is visited.
                   </div>
                   <div id="global-props-container"></div>
                   <button type="button" class="btn btn-primary icon-btn" onclick="addGlobalPropsRow()">
