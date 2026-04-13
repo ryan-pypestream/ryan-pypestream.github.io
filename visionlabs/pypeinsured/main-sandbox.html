@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pype Insured Main (SANDBOX)</title>
+    <link rel="icon" type="image/png"
+          href="https://s3.us-east-1.amazonaws.com/duploservices-shared-app-bot-148824523120/SalesDemos/PypeInsuredNEW/assets/Pypestream_PypeLogo.png">
+    <style>
+        body {
+            background: radial-gradient(ellipse 120% 100% at 50% 20%, rgba(134, 115, 231, 0.35) 0%, rgba(134, 115, 231, 0.25) 25%, rgba(88, 86, 228, 0.2) 45%, rgba(88, 86, 228, 0.1) 60%, transparent 80%),
+            radial-gradient(ellipse 100% 120% at 60% 80%, rgba(88, 86, 228, 0.25) 0%, rgba(88, 86, 228, 0.1) 40%, transparent 70%),
+            radial-gradient(ellipse 80% 100% at 30% 70%, rgba(134, 115, 231, 0.2) 0%, transparent 50%),
+            linear-gradient(180deg, rgba(21, 26, 37, 0.4) 0%, rgba(21, 26, 37, 0) 50%, #151a25 100%);
+            background-color: #151a25;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
+        #chatContainer {
+            height: calc(100% - 100px) !important;
+            margin: 0 auto;
+            max-width: 80%;
+            margin-top: 100px;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .top-left-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            max-width: 15rem;
+            height: auto;
+        }
+    </style>
+    <script>
+        !function (t, e) {
+            var o, n, p, r;
+            e.__SV || (window.analytics = e, e._i = [], e.init = function (i, s, a) {
+                function g(t, e) {
+                    var o = e.split(".");
+                    2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () {
+                        t.push([e].concat(Array.prototype.slice.call(arguments, 0)))
+                    }
+                }
+
+                (p = t.createElement("script")).type = "text/javascript", p.async = !0, p.src = s.api_host + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r);
+                var u = e;
+                for (void 0 !== a ? u = e[a] = [] : a = "analytics", u.people = u.people || [], u.toString = function (t) {
+                    var e = "analytics";
+                    return "analytics" !== a && (e += "." + a), t || (e += " (stub)"), e
+                }, u.people.toString = function () {
+                    return u.toString(1) + ".people (stub)"
+                }, o = "capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "), n = 0; n < o.length; n++) g(u, o[n]);
+                e._i.push([i, s, a])
+            }, e.__SV = 1)
+        }(document, window.analytics || []);
+        analytics.init('phc_UrPN5g86CJUeB8w7vBy4ayRpTwIgMMOunkH3GbHZ8wF', {
+            api_host: 'https://analytics.pypestream.com',
+            session_recording: {
+                recordCrossOriginIframes: true,
+            }
+        });
+    </script>
+</head>
+<body>
+<img src="https://s3.us-east-1.amazonaws.com/duploservices-shared-app-bot-148824523120/SalesDemos/PypeInsuredNEW/assets/pypestream_demos_duo_logo.png"
+     alt="PypeStream Logo" class="top-left-logo">
+<div id="chatContainer">
+    <script src="https://web.pypestream.com/api-launcher.js"></script>
+    <script>
+        Pypestream("config", {
+            domain: 'main',
+            env: 'sandbox'
+        });
+        window.onload = function bootWidget() {
+            Pypestream("boot", {
+                APP_ID: "",
+                analytics_key: 'phc_kXEUPG6yI7ivrVKkd7QqO3o5BAyO2JQnF8KP9qOYF9O',
+                analytics_host: 'https://analytics.main.pypestream.dev'
+            }, document.getElementById('chatContainer'));
+        };
+    </script>
+</div>
+</body>
+</html>
